@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Yasir Alamri — Cinematic Producer & Director | ياسر العمري</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Inter:wght@400;500;600;700&family=Bebas+Neue&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          charcoal: '#0a0a0a',
+          charcoal2: '#141214',
+          charcoal3: '#1c1a1c',
+          crimson: '#c90414', 
+          crimsonglow: '#cf0214', 
+          crimsondim: '#1A0002', 
+          ivory: '#F3F1EE',
+          smoke: '#9a9795',
+        },
+        fontFamily: {
+          cairo: ['Cairo','sans-serif'],
+          inter: ['Inter','sans-serif'],
+          bebas: ['"Bebas Neue"','sans-serif'],
+          mono2: ['"JetBrains Mono"','monospace'],
+        }
+      }
+    }
+  }
+</script>
+<style>
+  :root{ color-scheme: dark; }
+  html{ scroll-behavior:smooth; scroll-padding-top:96px; }
+  body{ background:#0a0a0a; color: #F3F1EE; } 
+
+  [data-en]{ font-family:'Inter',sans-serif; }
+  [data-ar]{ font-family:'Cairo',sans-serif; }
+  html[lang="ar"] [data-en]{ display:none; }
+  html[lang="en"] [data-ar]{ display:none; }
+
+  .font-display-ar{ font-family:'Cairo',sans-serif; font-weight:900; }
+  .font-display-en{ font-family:'Bebas Neue',sans-serif; letter-spacing:0.02em; }
+  .font-stat{ font-family:'Bebas Neue',sans-serif; }
+  .font-tc{ font-family:'JetBrains Mono',monospace; }
+
+  *:focus-visible{ outline:2px solid #5C0008; outline-offset:3px; border-radius:4px; } 
+
+  /* ambient background blobs */
+  .blob{ position:absolute; border-radius:50%; filter:blur(90px); pointer-events:none; }
+  .blob-1{ width:520px; height:520px; inset-inline-start:-140px; top:-120px; background:radial-gradient(circle, rgba(100,0,8,0.55), transparent 90%); animation:float1 19s ease-in-out infinite; } 
+  .blob-2{ width:600px; height:600px; inset-inline-end:-180px; top:22%; background:radial-gradient(circle, rgba(100,0,8,0.45), transparent 90%); animation:float2 24s ease-in-out infinite; } 
+  .blob-3{ width:560px; height:560px; inset-inline-start:25%; bottom:-220px; background:radial-gradient(circle, rgba(26,0,2,0.65), transparent 90%); animation:float3 27s ease-in-out infinite; } 
+  @keyframes float1{ 0%,100%{ transform:translate(0,0) scale(1); } 50%{ transform:translate(50px,55px) scale(1.12); } }
+  @keyframes float2{ 0%,100%{ transform:translate(0,0) scale(1); } 50%{ transform:translate(-60px,40px) scale(1.08); } }
+  @keyframes float3{ 0%,100%{ transform:translate(0,0) scale(1); } 50%{ transform:translate(30px,-40px) scale(1.15); } }
+
+  .scanlines{ background-image:repeating-linear-gradient(0deg, rgba(255,255,255,0.025) 0px, rgba(255,255,255,0.025) 1px, transparent 1px, transparent 3px); opacity:.6; }
+
+  /* glass cards */
+  .glass{ background:linear-gradient(180deg, rgba(255,255,255,0.045), rgba(255,255,255,0.015)); backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px); border:1px solid rgba(92,0,8,0.16); border-radius:1.1rem; transition:border-color .4s cubic-bezier(.25,.8,.25,1), transform .4s cubic-bezier(.25,.8,.25,1), box-shadow .4s cubic-bezier(.25,.8,.25,1); } 
+  .glass:hover{ border-color:rgba(92,0,8,0.55); box-shadow:0 0 50px -12px rgba(92,0,8,0.4); transform:translateY(-5px) scale(1.01); } 
+
+  /* تحسين أنيميشن الظهور المتتابع والمحسّن */
+  .reveal-parent .reveal-item { opacity: 0; transform: translateY(30px); transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+  .reveal-parent.in-view .reveal-item { opacity: 1; transform: translateY(0); }
+
+  /* إضافة تأخير ديناميكي تلقائي للعناصر المتتابعة لجمالية الظهور */
+  .reveal-parent.in-view .reveal-item:nth-child(1) { transition-delay: 0.05s; }
+  .reveal-parent.in-view .reveal-item:nth-child(2) { transition-delay: 0.15s; }
+  .reveal-parent.in-view .reveal-item:nth-child(3) { transition-delay: 0.25s; }
+  .reveal-parent.in-view .reveal-item:nth-child(4) { transition-delay: 0.35s; }
+  .reveal-parent.in-view .reveal-item:nth-child(5) { transition-delay: 0.45s; }
+
+  /* nav */
+  #nav{ background:transparent; border-bottom:1px solid transparent; }
+  #nav.scrolled{ background:rgba(10,10,10,0.72); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); border-bottom-color:rgba(92,0,8,0.14); } 
+
+  /* language pill */
+  .lang-pill{ position:relative; display:inline-flex; align-items:center; background:rgba(255,255,255,0.05); border:1px solid rgba(92,0,8,0.25); border-radius:999px; padding:3px; } 
+  .lang-pill button{ position:relative; z-index:2; padding:5px 14px; font-size:12px; letter-spacing:.06em; border-radius:999px; transition:color .3s ease; color:#9a9795; }
+  .lang-pill button.active{ color:#0a0a0a; }
+  .lang-pill .thumb{ position:absolute; top:3px; bottom:3px; inset-inline-start:3px; width:46px; background:linear-gradient(135deg,#5C0008,#3D0005); border-radius:999px; transition:transform .35s cubic-bezier(.22,1,.36,1); z-index:1; } 
+  html[lang="en"] .lang-pill .thumb{ transform:translateX(46px); }
+  html[dir="rtl"][lang="en"] .lang-pill .thumb{ transform:translateX(-46px); }
+
+  /* HUD */
+  .rec-dot{ animation:pulse 1.6s ease-in-out infinite; }
+  @keyframes pulse{ 0%,100%{ opacity:1; } 50%{ opacity:.25; } }
+
+  /* portfolio */
+  .work-card{ transition:opacity .4s ease, transform .4s cubic-bezier(0.16, 1, 0.3, 1); }
+  .work-thumb{ position:relative; overflow:hidden; aspect-ratio:4/5; border-radius:0.9rem; }
+  .work-thumb::after{ content:''; position:absolute; inset:0; background:repeating-linear-gradient(90deg, rgba(0,0,0,0.18) 0 2px, transparent 2px 26px); opacity:.5; }
+  .play-badge{ opacity:0; transform:scale(.7); transition:opacity .35s ease, transform .35s ease; }
+  .work-card:hover .play-badge{ opacity:1; transform:scale(1); }
+  .work-card:hover .work-thumb{ box-shadow:0 0 0 1.5px rgba(92,0,8,0.7), 0 25px 50px -20px rgba(92,0,8,0.45); } 
+  .work-card:hover .work-img{ transform:scale(1.07); }
+  .work-img{ transition:transform .6s cubic-bezier(.22,1,.36,1); }
+
+  .tab-btn.active{ background:linear-gradient(135deg,#5C0008,#3D0005); color:#fff; border-color:transparent; } 
+
+  /* marquee */
+  .marquee-wrap{ -webkit-mask-image:linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); mask-image:linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
+  .marquee-track{ display:flex; align-items:center; gap:3.5rem; width:max-content; animation:marquee 32s linear infinite; }
+  .marquee-wrap:hover .marquee-track{ animation-play-state:paused; }
+  @keyframes marquee{ from{ transform:translateX(0); } to{ transform:translateX(-50%); } }
+  .logo-chip{ filter:grayscale(1) opacity(.55); transition:filter .4s ease, transform .4s ease; }
+  .logo-chip:hover{ filter:grayscale(0) opacity(1) drop-shadow(0 0 14px rgba(92,0,8,0.55)); transform:translateY(-3px); } 
+
+  @media (prefers-reduced-motion: reduce){
+    .blob, .marquee-track, .rec-dot{ animation:none !important; }
+    .reveal-parent .reveal-item{ transition:none !important; opacity:1 !important; transform:none !important; }
+  }
+</style>
+</head>
+<body class="bg-charcoal text-ivory antialiased selection:bg-crimsonglow selection:text-charcoal overflow-x-hidden">
+
+  <div class="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+    <div class="absolute inset-0 scanlines"></div>
+  </div>
+
+  <header id="nav" class="fixed top-0 inset-x-0 z-50 transition-colors duration-500">
+    <div class="max-w-7xl mx-auto px-6 md:px-10 h-20 flex items-center justify-between">
+      <a href="#home" class="flex items-center gap-2 shrink-0">
+        <span class="font-display-ar text-xl" data-ar>ي . ع</span>
+        <span class="font-display-en text-xl tracking-wider" data-en>Y · A</span>
+      </a>
+
+      <nav class="hidden md:flex items-center gap-9 text-sm">
+        <a href="#home" class="hover:text-crimsonglow transition-colors"><span data-ar>الرئيسية</span><span data-en>Home</span></a>
+        <a href="#work" class="hover:text-crimsonglow transition-colors"><span data-ar>الأعمال</span><span data-en>Work</span></a>
+        <a href="#skills" class="hover:text-crimsonglow transition-colors"><span data-ar>المهارات</span><span data-en>Skills</span></a>
+        <a href="#partners" class="hover:text-crimsonglow transition-colors"><span data-ar>الشركاء</span><span data-en>Partners</span></a>
+        <a href="#contact" class="hover:text-crimsonglow transition-colors"><span data-ar>تواصل</span><span data-en>Contact</span></a>
+      </nav>
+
+      <div class="flex items-center gap-4">
+        <div class="lang-pill">
+          <div class="thumb"></div>
+          <button data-lang-btn="ar" class="active">AR</button>
+          <button data-lang-btn="en">EN</button>
+        </div>
+        <button id="menuBtn" class="md:hidden text-ivory" aria-label="Menu">
+          <svg id="iconMenu" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+          <svg id="iconClose" class="hidden" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div id="mobileMenu" class="hidden md:hidden border-t border-white/10 bg-charcoal/95 backdrop-blur-xl">
+      <nav class="flex flex-col px-6 py-6 gap-5 text-base">
+        <a href="#home" class="mobile-link"><span data-ar>الرئيسية</span><span data-en>Home</span></a>
+        <a href="#work" class="mobile-link"><span data-ar>الأعمال</span><span data-en>Work</span></a>
+        <a href="#skills" class="mobile-link"><span data-ar>المهارات</span><span data-en>Skills</span></a>
+        <a href="#partners" class="mobile-link"><span data-ar>الشركاء</span><span data-en>Partners</span></a>
+        <a href="#contact" class="mobile-link"><span data-ar>تواصل</span><span data-en>Contact</span></a>
+      </nav>
+    </div>
+  </header>
+
+  <section id="home" class="relative min-h-screen flex items-center justify-center px-6 pt-28 pb-16 overflow-hidden reveal-parent">
+    <div class="relative max-w-4xl mx-auto text-center">
+      <div class="reveal-item inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass mb-8 text-xs">
+        <span class="w-1.5 h-1.5 rounded-full bg-crimsonglow"></span>
+        <span data-ar>مخرج ومنتج سينمائي</span>
+        <span data-en class="font-bebas tracking-wider">CINEMATIC DIRECTOR & PRODUCER</span>
+      </div>
+
+      <h1 class="reveal-item text-4xl sm:text-5xl md:text-7xl leading-[1.15] mb-6">
+        <span data-ar class="font-display-ar block font-bold text-3xl sm:text-4xl md:text-5xl" style="line-height: 1.6;">ياسر العمري <span class="text-crimsonglow">|</span> منتج ومخرج سنيمائي</span>
+        <span data-en class="font-display-en block">YASIR ALAMRI <span class="text-crimsonglow">|</span> CINEMATIC PRODUCTION & DIRECTION</span>
+      </h1>
+
+      <p class="reveal-item max-w-2xl mx-auto text-base md:text-lg text-smoke leading-relaxed mb-10">
+        <span data-ar>أكثر من <span class="text-crimsonglow font-semibold">6 سنوات</span> من الخبرة في الإنتاج السينمائي والإخراج، أجسّد القصص من خلال الضوء والحركة.</span>
+        <span data-en>Over <span class="text-crimsonglow font-semibold">6 years</span> of experience in cinematic production and directing, bringing stories to life through light and motion.</span>
+      </p>
+
+      <div class="reveal-item flex flex-col sm:flex-row items-center justify-center gap-4">
+        <a href="#work" class="px-8 py-3.5 rounded-full bg-gradient-to-tr from-crimson to-crimsonglow text-white text-sm font-semibold shadow-[0_0_40px_-8px_rgba(92,0,8,0.7)] hover:shadow-[0_0_60px_-6px_rgba(92,0,8,0.9)] hover:-translate-y-0.5 transition-all duration-300">
+          <span data-ar>استعرض الأعمال</span>
+          <span data-en>View Portfolio</span>
+        </a>
+        <a href="#contact" class="px-8 py-3.5 rounded-full glass text-sm font-medium hover:text-crimsonglow transition-colors">
+          <span data-ar>تواصل معي</span>
+          <span data-en>Get in Touch</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="absolute bottom-8 inset-x-0 flex justify-center reveal-item">
+      <svg class="animate-bounce text-smoke/60" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M12 4v16M6 14l6 6 6-6"/></svg>
+    </div>
+  </section>
+
+  <section id="stats" class="relative py-24 px-6 reveal-parent">
+    <div class="max-w-6xl mx-auto">
+      <div class="reveal-item mb-12 text-center">
+        <div class="flex items-center justify-center gap-3 text-xs tracking-widest text-smoke mb-3">
+          <span class="font-tc text-crimsonglow/90">00:01</span>
+          <span>—</span>
+          <span data-ar>الأرقام</span>
+          <span data-en class="font-bebas">THE NUMBERS</span>
+        </div>
+        <h2 class="text-3xl md:text-4xl">
+          <span data-ar class="font-display-ar">بالأرقام</span>
+          <span data-en class="font-display-en">By the Numbers</span>
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-5">
+        <div class="glass reveal-item p-7 text-center">
+          <div class="font-stat text-4xl md:text-5xl text-crimsonglow mb-2">+<span data-count="130">0</span></div>
+          <div class="text-sm text-smoke"><span data-ar>عميل</span><span data-en>Clients Served</span></div>
+        </div>
+        <div class="glass reveal-item p-7 text-center">
+          <div class="font-stat text-4xl md:text-5xl text-crimsonglow mb-2">+<span data-count="100">0</span></div>
+          <div class="text-sm text-smoke"><span data-ar>مقطع</span><span data-en>Videos & Clips Produced</span></div>
+        </div>
+        <div class="glass reveal-item p-7 text-center">
+          <div class="font-stat text-4xl md:text-5xl text-crimsonglow mb-2">+<span data-count="4">0</span></div>
+          <div class="text-sm text-smoke"><span data-ar>أفلام مستقلة</span><span data-en>Independent Films</span></div>
+        </div>
+        <div class="glass reveal-item p-7 text-center">
+          <div class="font-stat text-4xl md:text-5xl text-crimsonglow mb-2"><span data-count="2">0</span></div>
+          <div class="text-sm text-smoke"><span data-ar>جائزتين على المستوى الإقليمي</span><span data-en>Regional Awards</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="skills" class="relative py-24 px-6 reveal-parent">
+    <div class="max-w-6xl mx-auto">
+      <div class="reveal-item mb-12 text-center">
+        <div class="flex items-center justify-center gap-3 text-xs tracking-widest text-smoke mb-3">
+          <span class="font-tc text-crimsonglow/90">00:02</span>
+          <span>—</span>
+          <span data-ar>الأدوات</span>
+          <span data-en class="font-bebas">THE TOOLKIT</span>
+        </div>
+        <h2 class="text-3xl md:text-4xl">
+          <span data-ar class="font-display-ar">الأدوات والمهارات</span>
+          <span data-en class="font-display-en">Tools & Skills</span>
+        </h2>
+      </div>
+
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        <div class="glass reveal-item p-7 flex flex-col items-center text-center gap-4">
+          <div class="w-14 h-14 rounded-full flex items-center justify-center bg-crimson/10 text-crimsonglow">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 0 18 4.5 4.5 0 0 1 0-9 2.25 2.25 0 0 0 0-4.5A4.5 4.5 0 0 1 12 3Z"/><circle cx="12" cy="7.5" r="1"/><circle cx="16.5" cy="12" r="1"/></svg>
+          </div>
+          <div class="font-medium"><span data-ar>دافينشي ريزولف</span><span data-en>DaVinci Resolve</span></div>
+        </div>
+        <div class="glass reveal-item p-7 flex flex-col items-center text-center gap-4">
+          <div class="w-14 h-14 rounded-full flex items-center justify-center bg-crimson/10 text-crimsonglow">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.6 10.8c.4.3.6.8.6 1.3V16h6v-.9c0-.5.2-1 .6-1.3A6 6 0 0 0 12 3Z"/></svg>
+          </div>
+          <div class="font-medium"><span data-ar>هندسة الإضاءة</span><span data-en>Lighting Engineering</span></div>
+        </div>
+        <div class="glass reveal-item p-7 flex flex-col items-center text-center gap-4">
+          <div class="w-14 h-14 rounded-full flex items-center justify-center bg-crimson/10 text-crimsonglow">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="7" width="14" height="11" rx="2"/><path d="M17 10l4-2.2v8.4L17 14"/><circle cx="10" cy="12.5" r="2.4"/></svg>
+          </div>
+          <div class="font-medium"><span data-ar>زوايا التصوير</span><span data-en>Camera Angles & Cinematography</span></div>
+        </div>
+        <div class="glass reveal-item p-7 flex flex-col items-center text-center gap-4">
+          <div class="w-14 h-14 rounded-full flex items-center justify-center bg-crimson/10 text-crimsonglow">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M12 2v2M4.2 4.2l1.4 1.4M2 12h2M4.2 19.8l1.4-1.4M19.8 19.8l-1.4-1.4M22 12h-2M19.8 4.2l-1.4 1.4"/><circle cx="12" cy="12" r="4.2"/></svg>
+          </div>
+          <div class="font-medium"><span data-ar>التفكير الإبداعي</span><span data-en>Creative Thinking</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="work" class="relative py-24 px-6 reveal-parent">
+    <div class="max-w-6xl mx-auto">
+      <div class="reveal-item mb-10 text-center">
+        <div class="flex items-center justify-center gap-3 text-xs tracking-widest text-smoke mb-3">
+          <span class="font-tc text-crimsonglow/90">00:03</span>
+          <span>—</span>
+          <span data-ar>نماذج الأعمال</span>
+          <span data-en class="font-bebas">SELECTED WORK</span>
+        </div>
+        <h2 class="text-3xl md:text-4xl">
+          <span data-ar class="font-display-ar">نماذج الأعمال</span>
+          <span data-en class="font-display-en">Selected Work</span>
+        </h2>
+      </div>
+
+      <div class="reveal-item flex flex-wrap items-center justify-center gap-3 mb-12">
+        <button data-filter="all" class="tab-btn active px-5 py-2 rounded-full text-sm border border-crimsonglow/25 transition-colors duration-300"><span data-ar>الكل</span><span data-en>All</span></button>
+        <button data-filter="films" class="tab-btn px-5 py-2 rounded-full text-sm border border-crimsonglow/25 transition-colors duration-300"><span data-ar>أفلام</span><span data-en>Films</span></button>
+        <button data-filter="events" class="tab-btn px-5 py-2 rounded-full text-sm border border-crimsonglow/25 transition-colors duration-300"><span data-ar>إيفنتات</span><span data-en>Events</span></button>
+        <button data-filter="clips" class="tab-btn px-5 py-2 rounded-full text-sm border border-crimsonglow/25 transition-colors duration-300"><span data-ar>مقاطع متنوعة</span><span data-en>Clips</span></button>
+      </div>
+
+      <div id="workGrid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <article class="work-card reveal-item" data-category="films">
+          <div class="work-thumb bg-gradient-to-br from-charcoal3 via-crimsondim to-charcoal">
+            <div class="work-img absolute inset-0 bg-gradient-to-tr from-crimson/30 via-transparent to-transparent"></div>
+            <div class="play-badge absolute inset-0 flex items-center justify-center">
+              <span class="w-14 h-14 rounded-full bg-charcoal/70 border border-crimsonglow/60 flex items-center justify-center backdrop-blur-sm">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="text-crimsonglow"><path d="M8 5v14l11-7z"/></svg>
+              </span>
+            </div>
+            <div class="absolute bottom-0 inset-x-0 p-5 bg-gradient-to-t from-charcoal/95 to-transparent">
+              <div class="text-xs text-crimsonglow mb-1 font-tc"><span data-ar>فيلم قصير</span><span data-en>Short Film</span> · 14:32</div>
+              <div class="font-medium"><span data-ar>ظلال الذاكرة</span><span data-en>Shadows of Memory</span></div>
+            </div>
+          </div>
+        </article>
+        <article class="work-card reveal-item" data-category="films">
+          <div class="work-thumb bg-gradient-to-br from-charcoal3 via-crimson/40 to-charcoal">
+            <div class="work-img absolute inset-0 bg-gradient-to-tr from-crimsonglow/25 via-transparent to-transparent"></div>
+            <div class="play-badge absolute inset-0 flex items-center justify-center">
+              <span class="w-14 h-14 rounded-full bg-charcoal/70 border border-crimsonglow/60 flex items-center justify-center backdrop-blur-sm">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="text-crimsonglow"><path d="M8 5v14l11-7z"/></svg>
+              </span>
+            </div>
+            <div class="absolute bottom-0 inset-x-0 p-5 bg-gradient-to-t from-charcoal/95 to-transparent">
+              <div class="text-xs text-crimsonglow mb-1 font-tc"><span data-ar>فيلم قصير</span><span data-en>Short Film</span> · 11:05</div>
+              <div class="font-medium"><span data-ar>ضوء أخير</span><span data-en>Last Light</span></div>
+            </div>
+          </div>
+        </article>
+        <article class="work-card reveal-item" data-category="films">
+          <div class="work-thumb bg-gradient-to-br from-charcoal3 via-crimsondim to-charcoal">
+            <div class="work-img absolute inset-0 bg-gradient-to-tr from-crimson/30 via-transparent to-transparent"></div>
+            <div class="play-badge absolute inset-0 flex items-center justify-center">
+              <span class="w-14 h-14 rounded-full bg-charcoal/70 border border-crimsonglow/60 flex items-center justify-center backdrop-blur-sm">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="text-crimsonglow"><path d="M8 5v14l11-7z"/></svg>
+              </span>
+            </div>
+            <div class="absolute bottom-0 inset-x-0 p-5 bg-gradient-to-t from-charcoal/95 to-transparent">
+              <div class="text-xs text-crimsonglow mb-1 font-tc"><span data-ar>فيلم مستقل</span><span data-en>Independent Film</span> · 58:00</div>
+              <div class="font-medium"><span data-ar>المسافة بيننا</span><span data-en>The Distance Between Us</span></div>
+            </div>
+          </div>
+        </article>
+
+        <article class="work-card reveal-item" data-category="events">
+          <div class="work-thumb bg-gradient-to-br from-charcoal3 via-crimson/35 to-charcoal">
+            <div class="work-img absolute inset-0 bg-gradient-to-tr from-crimsonglow/20 via-transparent to-transparent"></div>
+            <div class="play-badge absolute inset-0 flex items-center justify-center">
+              <span class="w-14 h-14 rounded-full bg-charcoal/70 border border-crimsonglow/60 flex items-center justify-center backdrop-blur-sm">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="text-crimsonglow"><path d="M8 5v14l11-7z"/></svg>
+              </span>
+            </div>
+            <div class="absolute bottom-0 inset-x-0 p-5 bg-gradient-to-t from-charcoal/95 to-transparent">
+              <div class="text-xs text-crimsonglow mb-1 font-tc"><span data-ar>فيلم زفاف</span><span data-en>Wedding Film</span> · 3:20</div>
+              <div class="font-medium"><span data-ar>حفل زفاف — القاهرة</span><span data-en>Wedding Film — Cairo</span></div>
+            </div>
+          </div>
+        </article>
+        <article class="work-card reveal-item" data-category="events">
+          <div class="work-thumb bg-gradient-to-br from-charcoal3 via-crimsondim to-charcoal">
+            <div class="work-img absolute inset-0 bg-gradient-to-tr from-crimson/25 via-transparent to-transparent"></div>
+            <div class="play-badge absolute inset-0 flex items-center justify-center">
+              <span class="w-14 h-14 rounded-full bg-charcoal/70 border border-crimsonglow/60 flex items-center justify-center backdrop-blur-sm">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="text-crimsonglow"><path d="M8 5v14l11-7z"/></svg>
+              </span>
+            </div>
+            <div class="absolute bottom-0 inset-x-0 p-5 bg-gradient-to-t from-charcoal/95 to-transparent">
+              <div class="text-xs text-crimsonglow mb-1 font-tc"><span data-ar>فيلم إيفنت</span><span data-en>Event Film</span> · 2:45</div>
+              <div class="font-medium"><span data-ar>انطلاق منتج — مؤتمر</span><span data-en>Product Launch — Corporate Event</span></div>
+            </div>
+          </div>
+        </article>
+        <article class="work-card reveal-item" data-category="events">
+          <div class="work-thumb bg-gradient-to-br from-charcoal3 via-crimson/35 to-charcoal">
+            <div class="work-img absolute inset-0 bg-gradient-to-tr from-crimsonglow/20 via-transparent to-transparent"></div>
+            <div class="play-badge absolute inset-0 flex items-center justify-center">
+              <span class="w-14 h-14 rounded-full bg-charcoal/70 border border-crimsonglow/60 flex items-center justify-center backdrop-blur-sm">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="text-crimsonglow"><path d="M8 5v14l11-7z"/></svg>
+              </span>
+            </div>
+            <div class="absolute bottom-0 inset-x-0 p-5 bg-gradient-to-t from-charcoal/95 to-transparent">
+              <div class="text-xs text-crimsonglow mb-1 font-tc"><span data-ar>أبرز اللقطات</span><span data-en>Highlights Reel</span> · 4:10</div>
+              <div class="font-medium"><span data-ar>أبرز لحظات مهرجان موسيقي</span><span data-en>Music Festival Highlights</span></div>
+            </div>
+          </div>
+        </article>
+
+        <article class="work-card reveal-item" data-category="clips">
+          <div class="work-thumb bg-gradient-to-br from-charcoal3 via-crimsondim to-charcoal">
+            <div class="work-img absolute inset-0 bg-gradient-to-tr from-crimson/30 via-transparent to-transparent"></div>
+            <div class="play-badge absolute inset-0 flex items-center justify-center">
+              <span class="w-14 h-14 rounded-full bg-charcoal/70 border border-crimsonglow/60 flex items-center justify-center backdrop-blur-sm">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="text-crimsonglow"><path d="M8 5v14l11-7z"/></svg>
+              </span>
+            </div>
+            <div class="absolute bottom-0 inset-x-0 p-5 bg-gradient-to-t from-charcoal/95 to-transparent">
+              <div class="text-xs text-crimsonglow mb-1 font-tc"><span data-ar>حملة</span><span data-en>Campaign</span> · 0:38</div>
+              <div class="font-medium"><span data-ar>حملة أزياء</span><span data-en>Fashion Campaign</span></div>
+            </div>
+          </div>
+        </article>
+        <article class="work-card reveal-item" data-category="clips">
+          <div class="work-thumb bg-gradient-to-br from-charcoal3 via-crimson/35 to-charcoal">
+            <div class="work-img absolute inset-0 bg-gradient-to-tr from-crimsonglow/20 via-transparent to-transparent"></div>
+            <div class="play-badge absolute inset-0 flex items-center justify-center">
+              <span class="w-14 h-14 rounded-full bg-charcoal/70 border border-crimsonglow/60 flex items-center justify-center backdrop-blur-sm">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="text-crimsonglow"><path d="M8 5v14l11-7z"/></svg>
+              </span>
+            </div>
+            <div class="absolute bottom-0 inset-x-0 p-5 bg-gradient-to-t from-charcoal/95 to-transparent">
+              <div class="text-xs text-crimsonglow mb-1 font-tc"><span data-ar>سفر</span><span data-en>Travel Reel</span> · 1:12</div>
+              <div class="font-medium"><span data-ar>مقطع سفر — البحر الأحمر</span><span data-en>Travel Reel — Red Sea</span></div>
+            </div>
+          </div>
+        </article>
+        <article class="work-card reveal-item" data-category="clips">
+          <div class="work-thumb bg-gradient-to-br from-charcoal3 via-crimsondim to-charcoal">
+            <div class="work-img absolute inset-0 bg-gradient-to-tr from-crimson/25 via-transparent to-transparent"></div>
+            <div class="play-badge absolute inset-0 flex items-center justify-center">
+              <span class="w-14 h-14 rounded-full bg-charcoal/70 border border-crimsonglow/60 flex items-center justify-center backdrop-blur-sm">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="text-crimsonglow"><path d="M8 5v14l11-7z"/></svg>
+              </span>
+            </div>
+            <div class="absolute bottom-0 inset-x-0 p-5 bg-gradient-to-t from-charcoal/95 to-transparent">
+              <div class="text-xs text-crimsonglow mb-1 font-tc"><span data-ar>إعلان</span><span data-en>Commercial</span> · 0:45</div>
+              <div class="font-medium"><span data-ar>إعلان تجاري</span><span data-en>Brand Commercial</span></div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="partners" class="relative py-24 overflow-hidden reveal-parent">
+    <div class="max-w-6xl mx-auto px-6 text-center mb-12">
+      <div class="reveal-item flex items-center justify-center gap-3 text-xs tracking-widest text-smoke mb-3">
+        <span class="font-tc text-crimsonglow/90">00:04</span>
+        <span>—</span>
+        <span data-ar>شركاء النجاح</span>
+        <span data-en class="font-bebas">SUCCESS PARTNERS</span>
+      </div>
+      <h2 class="reveal-item text-3xl md:text-4xl mb-3">
+        <span data-ar class="font-display-ar">شركاء النجاح</span>
+        <span data-en class="font-display-en">Success Partners</span>
+      </h2>
+      <p class="reveal-item text-smoke text-sm max-w-xl mx-auto">
+        <span data-ar>العلامات والمؤسسات التي وثقت بالرؤية الإبداعية</span>
+        <span data-en>Brands and institutions that trusted the creative vision</span>
+      </p>
+    </div>
+
+    <div class="marquee-wrap reveal-item">
+      <div class="marquee-track">
+        <div class="logo-chip w-28 h-16 rounded-xl glass flex items-center justify-center font-bebas text-lg shrink-0">PRT 01</div>
+        <div class="logo-chip w-28 h-16 rounded-xl glass flex items-center justify-center font-bebas text-lg shrink-0">PRT 02</div>
+        <div class="logo-chip w-28 h-16 rounded-xl glass flex items-center justify-center font-bebas text-lg shrink-0">PRT 03</div>
+        <div class="logo-chip w-28 h-16 rounded-xl glass flex items-center justify-center font-bebas text-lg shrink-0">PRT 04</div>
+        <div class="logo-chip w-28 h-16 rounded-xl glass flex items-center justify-center font-bebas text-lg shrink-0">PRT 01</div>
+        <div class="logo-chip w-28 h-16 rounded-xl glass flex items-center justify-center font-bebas text-lg shrink-0">PRT 02</div>
+        <div class="logo-chip w-28 h-16 rounded-xl glass flex items-center justify-center font-bebas text-lg shrink-0">PRT 03</div>
+        <div class="logo-chip w-28 h-16 rounded-xl glass flex items-center justify-center font-bebas text-lg shrink-0">PRT 04</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="relative py-24 px-6 bg-charcoal2 reveal-parent">
+    <div class="max-w-4xl mx-auto text-center">
+      <div class="reveal-item flex items-center justify-center gap-3 text-xs tracking-widest text-smoke mb-3">
+        <span class="font-tc text-crimsonglow/90">00:05</span>
+        <span>—</span>
+        <span data-ar>ابدأ مشروعك</span>
+        <span data-en class="font-bebas">START YOUR PROJECT</span>
+      </div>
+      <h2 class="reveal-item text-3xl md:text-5xl font-bold mb-6">
+        <span data-ar class="font-display-ar">لنصنع شيئاً عظيماً معاً</span>
+        <span data-en class="font-display-en">Let's Create Something Great Together</span>
+      </h2>
+      <p class="reveal-item text-smoke text-base max-w-xl mx-auto mb-12">
+        <span data-ar>سواء كان لديك فكرة فيلم، أو مشروع تجاري، يمكنك التواصل معي مباشرة عبر القنوات التالية:</span>
+        <span data-en>Whether you have a film idea or a commercial project, feel free to contact me directly:</span>
+      </p>
+
+      <div class="reveal-item grid sm:grid-cols-2 gap-6 max-w-2xl mx-auto">
+        <!-- الواتساب -->
+        <a href="https://wa.me/966545424890" target="_blank" class="glass p-6 flex flex-col items-center gap-3">
+          <div class="w-12 h-12 rounded-full bg-crimson/10 flex items-center justify-center text-crimsonglow">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          </div>
+          <div>
+            <div class="text-xs text-smoke mb-1"><span data-ar>واتساب (السعودية)</span><span data-en>WhatsApp (KSA)</span></div>
+            <div class="font-semibold text-ivory font-tc" dir="ltr">0545424890</div>
+          </div>
+        </a>
+
+        <!-- الإيميل -->
+        <a href="mailto:yasir.vue.studio@gmail.com" class="glass p-6 flex flex-col items-center gap-3">
+          <div class="w-12 h-12 rounded-full bg-crimson/10 flex items-center justify-center text-crimsonglow">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+          <div>
+            <div class="text-xs text-smoke mb-1"><span data-ar>البريد الإلكتروني</span><span data-en>Email Address</span></div>
+            <div class="font-semibold text-ivory font-tc break-all">yasir.vue.studio@gmail.com</div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="border-t border-white/5 py-8 px-6 text-center text-xs text-smoke bg-charcoal">
+    <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div>
+        <span data-ar>© ٢٠٢٦ ياسر العمري. جميع الحقوق محفوظة.</span>
+        <span data-en>© 2026 Yasir Alamri. All Rights Reserved.</span>
+      </div>
+      <div class="font-tc text-crimsonglow/70">
+        REC · LIVE
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // تفعيل وتغيير اللغات
+    const langBtns = document.querySelectorAll('[data-lang-btn]');
+    langBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const lang = btn.getAttribute('data-lang-btn');
+        document.documentElement.setAttribute('lang', lang);
+        document.documentElement.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+        langBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+      });
+    });
+
+    // قائمة الموبايل
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const iconMenu = document.getElementById('iconMenu');
+    const iconClose = document.getElementById('iconClose');
+
+    menuBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+      iconMenu.classList.toggle('hidden');
+      iconClose.classList.toggle('hidden');
+    });
+
+    document.querySelectorAll('.mobile-link').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.add('hidden');
+        iconMenu.classList.remove('hidden');
+        iconClose.classList.add('hidden');
+      });
+    });
+
+    // تغيير هيدر التنقل عند التمرير
+    window.addEventListener('scroll', () => {
+      const nav = document.getElementById('nav');
+      if(window.scrollY > 50) {
+        nav.classList.add('scrolled');
+      } else {
+        nav.classList.remove('scrolled');
+      }
+    });
+
+    // مراقبة الأقسام وتفعيل حركات العناصر الداخلية (Move on / Smooth Transition) عند السكرول
+    const revealParents = document.querySelectorAll('.reveal-parent');
+    
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          
+          // تشغيل عداد الأرقام تلقائياً بمجرد ظهور قسم الإحصائيات
+          const counters = entry.target.querySelectorAll('[data-count]');
+          counters.forEach(counter => {
+            if(!counter.classList.contains('counted')) {
+              counter.classList.add('counted');
+              const target = +counter.getAttribute('data-count');
+              let count = 0;
+              const speed = target / 40;
+              const updateCount = () => {
+                count += speed;
+                if(count < target) {
+                  counter.innerText = Math.floor(count);
+                  setTimeout(updateCount, 20);
+                } else {
+                  counter.innerText = target;
+                }
+              };
+              updateCount();
+            }
+          });
+        }
+      });
+    }, {
+      threshold: 0.1, // تبدأ الحركة فور ظهور 10% من القسم على الشاشة لحركة أسرع وأسلس
+      rootMargin: "0px 0px -50px 0px"
+    });
+
+    revealParents.forEach(parent => {
+      revealObserver.observe(parent);
+    });
+
+    // فلترة نماذج الأعمال
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const workCards = document.querySelectorAll('.work-card');
+
+    tabBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        tabBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const filter = btn.getAttribute('data-filter');
+
+        workCards.forEach(card => {
+          if(filter === 'all' || card.getAttribute('data-category') === filter) {
+            card.style.display = 'block';
+            setTimeout(() => {
+              card.style.opacity = '1';
+              card.style.transform = 'translateY(0) scale(1)';
+            }, 5);
+          } else {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(15px) scale(0.95)';
+            setTimeout(() => card.style.display = 'none', 300);
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>
