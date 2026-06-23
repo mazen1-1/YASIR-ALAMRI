@@ -230,7 +230,24 @@
     .video-thumb-frame .play-btn-circle svg{ width:20px; height:20px; margin-inline-start:2px; }
 
     /* ── PORTFOLIO IMAGE ITEM (natural size, no crop) ── */
-    .portfolio-img-item{ width:100%; height:auto; display:block; border-radius:0.9rem; border:1px solid rgba(243,241,238,0.08); }
+    .portfolio-img-item{ width:100%; height:auto; display:block; border-radius:0.9rem; border:1px solid rgba(243,241,238,0.08); cursor:pointer; transition:transform .4s cubic-bezier(.22,1,.36,1), filter .4s ease; }
+    .portfolio-img-item:hover{ transform:scale(1.02); filter:brightness(1.05); }
+
+    /* ── IMAGE LIGHTBOX MODAL ── */
+    #image-modal-overlay{
+      position:fixed; inset:0; z-index:99991; background:rgba(5,5,5,0.93);
+      backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+      display:none; align-items:center; justify-content:center; padding:1.25rem;
+    }
+    #image-modal-overlay.show{ display:flex; }
+    .image-modal-frame{ position:relative; max-width:95vw; max-height:95vh; }
+    .image-modal-frame img{ display:block; max-width:95vw; max-height:95vh; width:auto; height:auto; border-radius:0.6rem; }
+    .image-modal-close{
+      position:absolute; top:10px; inset-inline-end:10px; width:34px; height:34px; border-radius:50%; z-index:5;
+      background:rgba(10,10,10,0.6); border:1px solid rgba(243,241,238,0.3); color:#F3F1EE;
+      display:flex; align-items:center; justify-content:center; cursor:pointer; transition:all .25s ease;
+    }
+    .image-modal-close:hover{ background:#E03030; border-color:#E03030; }
 
     /* ── VIDEO MODAL ── */
     #video-modal-overlay{
@@ -702,6 +719,16 @@
     </div>
   </div>
 
+  <!-- ══ IMAGE LIGHTBOX MODAL ══ -->
+  <div id="image-modal-overlay" onclick="if(event.target===this) closeImageModal()">
+    <div class="image-modal-frame">
+      <button class="image-modal-close" onclick="closeImageModal()" aria-label="Close">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+      <img id="image-modal-img" src="" alt=""/>
+    </div>
+  </div>
+
   <script>
   /* ══ CONFIG ══ */
   const GITHUB_OWNER = 'mazen1-1';
@@ -918,8 +945,23 @@
     document.body.style.overflow = '';
   }
 
+  /* ══ IMAGE LIGHTBOX MODAL ══ */
+  function openImageModal(url, title){
+    const img = document.getElementById('image-modal-img');
+    img.src = url;
+    img.alt = title || '';
+    document.getElementById('image-modal-overlay').classList.add('show');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeImageModal(){
+    document.getElementById('image-modal-overlay').classList.remove('show');
+    document.getElementById('image-modal-img').src = '';
+    document.body.style.overflow = '';
+  }
+
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') closeVideoModal();
+    if (e.key === 'Escape') { closeVideoModal(); closeImageModal(); }
   });
 
   function renderCategoryVideos(cat) {
@@ -936,7 +978,7 @@
       if (v.kind === 'image') {
         return `
           <div class="sr sr-bounce sr-d${Math.min(i+1,6)}" style="width:100%;">
-            <img class="portfolio-img-item" src="${v.url}" alt="${escAttr(v.title)}" loading="lazy"/>
+            <img class="portfolio-img-item" src="${v.url}" alt="${escAttr(v.title)}" loading="lazy" data-imgidx="${i}"/>
             ${v.title ? `<div class="mt-2 text-xs md:text-sm text-smoke px-1">${v.title}</div>` : ''}
           </div>`;
       }
@@ -963,6 +1005,13 @@
       el.addEventListener('click', () => {
         const idx = +el.dataset.vidx;
         openVideoModal(cat.videos[idx]);
+      });
+    });
+    gridEl.querySelectorAll('.portfolio-img-item').forEach(el => {
+      el.addEventListener('click', () => {
+        const idx = +el.dataset.imgidx;
+        const v = cat.videos[idx];
+        openImageModal(v.url, v.title);
       });
     });
   }
