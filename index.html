@@ -635,7 +635,6 @@
       langBtns.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       
-      // Re-render categories to instantly update tab titles and video headings if needed
       if(allCategories.length > 0) {
         renderTabsOnly();
       }
@@ -737,11 +736,11 @@
     grid.innerHTML = stats.map((s, i) => `
       <div class="glass stat-card sr sr-bounce sr-d${i+1} p-7 text-center">
         <div class="font-stat text-4xl md:text-5xl mb-2" style="color:#E03030;">
-          ${s.prefix||'+'}<span class="stat-num" data-count="${s.value}">0</span>${s.suffix||''}
+          ${s.prefix||''}<span class="stat-num" data-count="${s.value}">0</span>${s.suffix||''}
         </div>
         <div class="text-sm text-smoke">
-          <span data-ar>${s.labelAr||s.label||''}</span>
-          <span data-en>${s.labelEn||s.label||''}</span>
+          <span data-ar>${s.labelAr || s.label || ''}</span>
+          <span data-en>${s.labelEn || s.label || ''}</span>
         </div>
       </div>
     `).join('');
@@ -762,8 +761,8 @@
 
   function renderFallbackStats() {
     const fallback = [
-      { prefix:'+', value:100, suffix:'', labelAr:'عميل سعيد', labelEn:'Happy Clients' },
-      { prefix:'+', value:130, suffix:'', labelAr:'مقطع منتج', labelEn:'Videos Produced' },
+      { prefix:'+', value:130, suffix:'', labelAr:'عميل سعيد', labelEn:'Happy Clients' },
+      { prefix:'+', value:100, suffix:'', labelAr:'مقطع منتج', labelEn:'Videos Produced' },
       { prefix:'+', value:4,   suffix:'', labelAr:'أفلام مستقلة', labelEn:'Independent Films' },
       { prefix:'',  value:2,   suffix:'', labelAr:'جوائز إقليمية', labelEn:'Regional Awards' },
     ];
@@ -771,7 +770,7 @@
   }
 
   /* ══════════════════════════════════
-     RENDER WORK (with multilingual support)
+     RENDER WORK
   ══════════════════════════════════ */
   let allCategories = [];
   let activeTab = 0;
@@ -789,8 +788,7 @@
       <button class="tab-btn px-5 py-2 rounded-full text-sm border transition-all duration-300 ${i===activeTab?'active':''}"
         style="border-color:rgba(224,48,48,0.25);"
         data-tab="${i}">
-        <span data-ar>${cat.titleAr || cat.title}</span>
-        <span data-en>${cat.titleEn || cat.title}</span>
+        <span>${cat.title}</span>
       </button>
     `).join('');
 
@@ -826,8 +824,8 @@
     if (!cat || !cat.videos || !cat.videos.length) {
       gridEl.innerHTML = `
         <div class="text-center text-smoke py-16">
-          <span data-ar>لا توجد فيديوهات في هذا القسم</span>
-          <span data-en>No videos found in this category</span>
+          <span data-ar>لا توجد فيديوهات في هذا القسم حالياً</span>
+          <span data-en>No videos found in this category yet</span>
         </div>`;
       return;
     }
@@ -840,17 +838,16 @@
           <div style="${aspectStyle}position:relative;border-radius:0.9rem;overflow:hidden;background:#141214;">
             <iframe
               src="https://www.youtube.com/embed/${v.id}?rel=0&modestbranding=1"
-              title="${v.titleAr || v.title || 'Video'}"
+              title="${v.title || 'Video'}"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowfullscreen
               loading="lazy"
               style="position:absolute;inset:0;width:100%;height:100%;border:none;">
             </iframe>
           </div>
-          ${(v.titleAr || v.titleEn || v.title) ? `
+          ${v.title ? `
             <div class="mt-2 text-sm text-smoke px-1">
-              <span data-ar>${v.titleAr || v.title}</span>
-              <span data-en>${v.titleEn || v.title}</span>
+              <span>${v.title}</span>
             </div>` : ''}
         </div>
       `;
@@ -869,7 +866,7 @@
     const gridEl = document.getElementById('work-grid');
     tabsEl.innerHTML = `
       <button class="tab-btn px-5 py-2 rounded-full text-sm border active" style="border-color:rgba(224,48,48,0.25);">
-        <span data-ar>🎬 مقاطع قصيرة</span><span data-en>🎬 Shorts</span>
+        <span>🎬 مقاطع قصيرة</span>
       </button>
     `;
     gridEl.innerHTML = `
