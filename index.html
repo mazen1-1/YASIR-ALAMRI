@@ -214,6 +214,43 @@
       .grid-shorts-4{ grid-template-columns:repeat(2,1fr); }
     }
 
+    /* ── VIDEO THUMBNAIL / PLAY BUTTON ── */
+    .video-thumb-frame{ position:relative; border-radius:0.9rem; overflow:hidden; background:#141214; cursor:pointer; }
+    .video-thumb-frame img{ width:100%; height:100%; object-fit:cover; display:block; transition:transform .5s cubic-bezier(.22,1,.36,1), filter .4s ease; }
+    .video-thumb-frame:hover img{ transform:scale(1.06); filter:brightness(0.7); }
+    .video-thumb-frame.no-thumb{ background:linear-gradient(135deg,#1c1a1c,#0a0a0a); }
+    .video-thumb-frame .play-btn{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; pointer-events:none; }
+    .video-thumb-frame .play-btn-circle{
+      width:60px; height:60px; border-radius:50%;
+      background:rgba(10,10,10,0.55); border:1.5px solid rgba(243,241,238,0.55);
+      display:flex; align-items:center; justify-content:center;
+      backdrop-filter:blur(6px); transition:all .35s cubic-bezier(.22,1,.36,1);
+    }
+    .video-thumb-frame:hover .play-btn-circle{ background:#E03030; border-color:#E03030; transform:scale(1.1); box-shadow:0 0 30px rgba(224,48,48,0.5); }
+    .video-thumb-frame .play-btn-circle svg{ width:20px; height:20px; margin-inline-start:2px; }
+
+    /* ── PORTFOLIO IMAGE ITEM (natural size, no crop) ── */
+    .portfolio-img-item{ width:100%; height:auto; display:block; border-radius:0.9rem; border:1px solid rgba(243,241,238,0.08); }
+
+    /* ── VIDEO MODAL ── */
+    #video-modal-overlay{
+      position:fixed; inset:0; z-index:99990; background:rgba(5,5,5,0.93);
+      backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+      display:none; align-items:center; justify-content:center; padding:1.25rem;
+    }
+    #video-modal-overlay.show{ display:flex; }
+    .video-modal-frame{ position:relative; width:min(94vw, 1280px); aspect-ratio:16/9; }
+    .video-modal-frame.portrait{ width:auto; height:min(88vh, 820px); max-width:94vw; aspect-ratio:9/16; }
+    .video-modal-frame iframe, .video-modal-frame video{
+      position:absolute; inset:0; width:100%; height:100%; border:0; border-radius:0.7rem; background:#000;
+    }
+    .video-modal-close{
+      position:absolute; top:10px; inset-inline-end:10px; width:34px; height:34px; border-radius:50%; z-index:5;
+      background:rgba(10,10,10,0.6); border:1px solid rgba(243,241,238,0.3); color:#F3F1EE;
+      display:flex; align-items:center; justify-content:center; cursor:pointer; transition:all .25s ease;
+    }
+    .video-modal-close:hover{ background:#E03030; border-color:#E03030; }
+
     /* ── SKILLS ── */
     .skill-card{ position:relative; overflow:hidden; transition:all .4s cubic-bezier(.25,.8,.25,1); }
     .skill-card::before{ content:''; position:absolute; inset:0; background:linear-gradient(135deg, rgba(224,48,48,0.06), transparent 60%); opacity:0; transition:opacity .4s ease; }
@@ -654,6 +691,17 @@
       </div>
     </div>
   </footer>
+
+  <!-- ══ VIDEO MODAL (fullscreen player) ══ -->
+  <div id="video-modal-overlay" onclick="if(event.target===this) closeVideoModal()">
+    <div class="video-modal-frame" id="video-modal-frame">
+      <button class="video-modal-close" onclick="closeVideoModal()" aria-label="Close">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+      <div id="video-modal-content"></div>
+    </div>
+  </div>
+
   <script>
   /* ══ CONFIG ══ */
   const GITHUB_OWNER = 'mazen1-1';
@@ -823,31 +871,100 @@
     return 'aspect-ratio:16/9;';
   }
 
+  /* ══ HELPERS: VIDEO SOURCE / THUMBNAIL ══ */
+  function escAttr(s){ return String(s||'').replace(/"/g,'&quot;'); }
+
+  function isDirectVideoFile(url){
+    return /\.(mp4|webm|ogg|mov)(\?.*)?$/i.test(url||'');
+  }
+
+  function getVideoThumb(v){
+    if (v.thumbnail) return v.thumbnail;
+    if (v.id) return `https://i.ytimg.com/vi/${v.id}/hqdefault.jpg`;
+    return '';
+  }
+
+  function buildVideoEmbedHTML(v){
+    const t = escAttr(v.title || 'Video');
+    if (v.id) {
+      return `<iframe src="https://www.youtube.com/embed/${v.id}?autoplay=1&rel=0&modestbranding=1" title="${t}"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen></iframe>`;
+    }
+    if (v.url) {
+      if (isDirectVideoFile(v.url)) {
+        return `<video src="${v.url}" controls autoplay playsinline></video>`;
+      }
+      return `<iframe src="${v.url}" title="${t}"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen></iframe>`;
+    }
+    return '';
+  }
+
+  /* ══ VIDEO MODAL ══ */
+  function openVideoModal(v){
+    const frame   = document.getElementById('video-modal-frame');
+    const content = document.getElementById('video-modal-content');
+    frame.classList.toggle('portrait', v.type === 'short');
+    content.innerHTML = buildVideoEmbedHTML(v);
+    document.getElementById('video-modal-overlay').classList.add('show');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeVideoModal(){
+    document.getElementById('video-modal-overlay').classList.remove('show');
+    document.getElementById('video-modal-content').innerHTML = '';
+    document.body.style.overflow = '';
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeVideoModal();
+  });
+
   function renderCategoryVideos(cat) {
     const gridEl = document.getElementById('work-grid');
     if (!cat || !cat.videos || !cat.videos.length) {
       gridEl.innerHTML = `<div class="text-center text-smoke py-16">
-        <span data-ar>لا توجد فيديوهات في هذا القسم حالياً</span>
-        <span data-en>No videos in this category yet</span></div>`;
+        <span data-ar>لا توجد عناصر في هذا القسم حالياً</span>
+        <span data-en>No items in this category yet</span></div>`;
       return;
     }
     const gridClass = getGridClass(cat.layout);
     const items = cat.videos.map((v, i) => {
+      /* ── IMAGE ITEM: natural size, no cropping ── */
+      if (v.kind === 'image') {
+        return `
+          <div class="sr sr-bounce sr-d${Math.min(i+1,6)}" style="width:100%;">
+            <img class="portfolio-img-item" src="${v.url}" alt="${escAttr(v.title)}" loading="lazy"/>
+            ${v.title ? `<div class="mt-2 text-xs md:text-sm text-smoke px-1">${v.title}</div>` : ''}
+          </div>`;
+      }
+      /* ── VIDEO ITEM: thumbnail + play button → fullscreen modal ── */
       const aspectStyle = getAspectStyle(cat.layout, v.type);
+      const thumb = getVideoThumb(v);
+      const thumbHTML = thumb
+        ? `<img src="${thumb}" alt="${escAttr(v.title)}" loading="lazy" onerror="this.parentElement.classList.add('no-thumb'); this.remove();"/>`
+        : '';
       return `
         <div class="sr sr-bounce sr-d${Math.min(i+1,6)}" style="width:100%;">
-          <div style="${aspectStyle}position:relative;border-radius:0.9rem;overflow:hidden;background:#141214;">
-            <iframe src="https://www.youtube.com/embed/${v.id}?rel=0&modestbranding=1"
-              title="${v.title||'Video'}"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowfullscreen loading="lazy"
-              style="position:absolute;inset:0;width:100%;height:100%;border:none;"></iframe>
+          <div class="video-thumb-frame${thumb?'':' no-thumb'}" style="${aspectStyle}" data-vidx="${i}">
+            ${thumbHTML}
+            <div class="play-btn"><div class="play-btn-circle">
+              <svg viewBox="0 0 24 24" fill="#F3F1EE"><path d="M8 5v14l11-7z"/></svg>
+            </div></div>
           </div>
           ${v.title ? `<div class="mt-2 text-xs md:text-sm text-smoke px-1">${v.title}</div>` : ''}
         </div>`;
     }).join('');
     gridEl.innerHTML = `<div class="${gridClass}">${items}</div>`;
     gridEl.querySelectorAll('.sr').forEach(el => { el.classList.remove('visible'); srObserver.observe(el); });
+    gridEl.querySelectorAll('.video-thumb-frame').forEach(el => {
+      el.addEventListener('click', () => {
+        const idx = +el.dataset.vidx;
+        openVideoModal(cat.videos[idx]);
+      });
+    });
   }
 
   function renderFallbackWork() {
