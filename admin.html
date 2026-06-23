@@ -508,7 +508,7 @@ function doLogin() {
     return;
   }
   if (!token || !token.startsWith('ghp_')) {
-    err.textContent = 'أدخل GitHub Token صحيح (يبدأ بـ ghp_)';
+    err.textContent = 'أدخل الـ Token الصحيح ';
     err.style.display = 'block';
     document.getElementById('token-input').focus();
     return;
