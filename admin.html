@@ -311,6 +311,17 @@
     <div class="login-title">لوحة تحكم — ياسر العمري</div>
     <input class="login-input" id="pw-input" type="password" placeholder="كلمة المرور"
       onkeydown="if(event.key==='Enter')doLogin()"/>
+    <div style="position:relative;">
+      <input class="login-input" id="token-input" type="password" placeholder="Token"
+        dir="ltr" style="font-family:'JetBrains Mono',monospace;font-size:0.82rem;padding-left:2.4rem;"
+        onkeydown="if(event.key==='Enter')doLogin()"/>
+      <button onclick="toggleTokenVis()" style="position:absolute;left:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--gray-300);padding:0;" title="إظهار/إخفاء">
+        <svg id="eye-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+      </button>
+    </div>
+    <div style="font-size:0.72rem;color:var(--gray-500);text-align:right;margin-top:-0.5rem;direction:rtl;">
+      التوكن مطلوب للحفظ فقط — يُحفظ في الذاكرة ولا يُخزّن
+    </div>
     <button class="login-btn" onclick="doLogin()">دخول</button>
     <div class="login-error" id="login-error">كلمة المرور خاطئة، حاول مجدداً</div>
   </div>
@@ -447,16 +458,32 @@
    CONFIG
 ══════════════════════════════════ */
 const ADMIN_PASSWORD = 'yasir2025';
-const GITHUB_TOKEN = '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';
 const GITHUB_OWNER   = 'mazen1-1';
 const GITHUB_REPO    = 'YASIR-ALAMRI';
 const DATA_FILE      = 'portfolio-data.json';
 
-const GH_HEADERS = {
-  'Authorization': 'token ' + GITHUB_TOKEN,
-  'Accept': 'application/vnd.github.v3+json',
-  'Content-Type': 'application/json',
-};
+// التوكن يُدخله المستخدم عند تسجيل الدخول
+let GITHUB_TOKEN = '';
+
+function getGHHeaders() {
+  return {
+    'Authorization': 'token ' + GITHUB_TOKEN,
+    'Accept': 'application/vnd.github.v3+json',
+    'Content-Type': 'application/json',
+  };
+}
+
+function toggleTokenVis() {
+  const inp = document.getElementById('token-input');
+  const ico = document.getElementById('eye-icon');
+  if (inp.type === 'password') {
+    inp.type = 'text';
+    ico.innerHTML = '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/>';
+  } else {
+    inp.type = 'password';
+    ico.innerHTML = '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>';
+  }
+}
 
 /* ══════════════════════════════════
    STATE
@@ -469,17 +496,29 @@ let fileSha    = null;
    LOGIN
 ══════════════════════════════════ */
 function doLogin() {
-  const val = document.getElementById('pw-input').value;
-  const err = document.getElementById('login-error');
-  if (val === ADMIN_PASSWORD) {
-    document.getElementById('login-screen').style.display = 'none';
-    document.getElementById('app').classList.add('visible');
-    loadFromGitHub();
-  } else {
+  const val   = document.getElementById('pw-input').value;
+  const token = document.getElementById('token-input').value.trim();
+  const err   = document.getElementById('login-error');
+
+  if (val !== ADMIN_PASSWORD) {
+    err.textContent = 'كلمة المرور خاطئة، حاول مجدداً';
     err.style.display = 'block';
     document.getElementById('pw-input').value = '';
     document.getElementById('pw-input').focus();
+    return;
   }
+  if (!token || !token.startsWith('ghp_')) {
+    err.textContent = 'أدخل GitHub Token صحيح (يبدأ بـ ghp_)';
+    err.style.display = 'block';
+    document.getElementById('token-input').focus();
+    return;
+  }
+
+  GITHUB_TOKEN = token;
+  err.style.display = 'none';
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('app').classList.add('visible');
+  loadFromGitHub();
 }
 
 /* ══════════════════════════════════
@@ -500,7 +539,7 @@ async function loadFromGitHub() {
   try {
     const apiRes = await fetch(
       `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${DATA_FILE}`,
-      { headers: GH_HEADERS }
+      { headers: getGHHeaders() }
     );
     if (apiRes.ok) {
       const apiJson = await apiRes.json();
@@ -548,7 +587,7 @@ async function saveToGitHub() {
     };
     const res = await fetch(
       `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${DATA_FILE}`,
-      { method:'PUT', headers:GH_HEADERS, body:JSON.stringify(body) }
+      { method:'PUT', headers:getGHHeaders(), body:JSON.stringify(body) }
     );
     if (!res.ok) { const e = await res.json(); throw new Error(e.message || 'HTTP '+res.status); }
     const json = await res.json();
