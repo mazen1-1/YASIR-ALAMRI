@@ -1,34 +1,4 @@
 {
-  "stats": [
-    {
-      "prefix": "+",
-      "value": 130,
-      "suffix": "",
-      "labelAr": "عميل",
-      "labelEn": "Happy Clients"
-    },
-    {
-      "prefix": "+",
-      "value": 100,
-      "suffix": "",
-      "labelAr": "مقطع منتج",
-      "labelEn": "Videos Produced"
-    },
-    {
-      "prefix": "+",
-      "value": 4,
-      "suffix": "",
-      "labelAr": "أفلام مستقلة",
-      "labelEn": "Independent Films"
-    },
-    {
-      "prefix": "",
-      "value": 2,
-      "suffix": "",
-      "labelAr": "جوائز إقليمية",
-      "labelEn": "Regional Awards"
-    }
-  ],
   "categories": [
     {
       "id": "cat_shorts",
@@ -47,6 +17,36 @@
       "title": "📺 إعلانات",
       "layout": "wide",
       "videos": []
+    }
+  ],
+  "stats": [
+    {
+      "prefix": "+",
+      "value": 100,
+      "suffix": "",
+      "labelAr": "عميل",
+      "labelEn": "Happy Clients"
+    },
+    {
+      "prefix": "+",
+      "value": 130,
+      "suffix": "",
+      "labelAr": "مقطع منتج",
+      "labelEn": "Videos Produced"
+    },
+    {
+      "prefix": "+",
+      "value": 4,
+      "suffix": "",
+      "labelAr": "أفلام مستقلة",
+      "labelEn": "Independent Films"
+    },
+    {
+      "prefix": "",
+      "value": 2,
+      "suffix": "",
+      "labelAr": "جوائز إقليمية",
+      "labelEn": "Regional Awards"
     }
   ]
 }
