@@ -4,7 +4,20 @@
       "id": "cat_shorts",
       "title": "🎬 مقاطع قصيرة",
       "layout": "shorts",
-      "videos": []
+      "videos": [
+        {
+          "kind": "image",
+          "url": "https://i.ibb.co/HDq6VGrm/gemini-3-1-flash-image-preview-nano-banana-2-a.png",
+          "title": "تداول"
+        },
+        {
+          "kind": "video",
+          "id": "QeVTkslrxmM",
+          "type": "short",
+          "title": "فيديو 2",
+          "thumbnail": "https://i.ibb.co/HDq6VGrm/gemini-3-1-flash-image-preview-nano-banana-2-a.png"
+        }
+      ]
     },
     {
       "id": "cat_films",
