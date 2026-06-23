@@ -1,1 +1,52 @@
-
+{
+  "stats": [
+    {
+      "prefix": "+",
+      "value": 130,
+      "suffix": "",
+      "labelAr": "عميل سعيد",
+      "labelEn": "Happy Clients"
+    },
+    {
+      "prefix": "+",
+      "value": 100,
+      "suffix": "",
+      "labelAr": "مقطع منتج",
+      "labelEn": "Videos Produced"
+    },
+    {
+      "prefix": "+",
+      "value": 4,
+      "suffix": "",
+      "labelAr": "أفلام مستقلة",
+      "labelEn": "Independent Films"
+    },
+    {
+      "prefix": "",
+      "value": 2,
+      "suffix": "",
+      "labelAr": "جوائز إقليمية",
+      "labelEn": "Regional Awards"
+    }
+  ],
+  "categories": [
+    {
+      "id": "cat_shorts",
+      "title": "🎬 مقاطع قصيرة",
+      "layout": "shorts",
+      "videos": []
+    },
+    {
+      "id": "cat_films",
+      "title": "🎥 أفلام",
+      "layout": "wide",
+      "videos": []
+    },
+    {
+      "id": "cat_commercials",
+      "title": "📺 إعلانات",
+      "layout": "wide",
+      "videos": []
+    }
+  ]
+}
