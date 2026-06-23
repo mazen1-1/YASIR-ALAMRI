@@ -237,6 +237,12 @@
     .thumb-preview.portrait{ width:32px; height:55px; }
     .thumb-preview.show{ display:block; }
 
+    /* ── KIND BADGE (image vs video) ── */
+    .kind-badge-image{
+      font-size:0.7rem; padding:0.15rem 0.5rem; border-radius:4px; flex-shrink:0;
+      background:var(--green-dim); color:var(--green); border:1px solid rgba(46,204,113,0.3);
+    }
+
     /* ── COLLAPSE ── */
     .cat-card-body.collapsed{ display:none; }
     .collapse-btn{ background:none; border:none; color:var(--gray-300); cursor:pointer; padding:0.2rem; transition:transform 0.25s, color 0.2s; font-size:0.9rem; }
@@ -381,7 +387,7 @@
     <!-- ═══ TAB: WORK ═══ -->
     <div class="tab-panel active" id="tab-work">
       <h1 class="page-title">إدارة الأعمال</h1>
-      <p class="page-sub">أضف أو احذف أو رتّب الأقسام والفيديوهات. اضغط "حفظ ونشر" لتطبيق التغييرات فوراً.</p>
+      <p class="page-sub">أضف أو احذف أو رتّب الأقسام والفيديوهات والصور. اضغط "حفظ ونشر" لتطبيق التغييرات فوراً.</p>
 
       <!-- ADD CATEGORY -->
       <div class="section-card">
@@ -623,12 +629,15 @@ const LAYOUT_LABELS = { wide:'عريض ×2', shorts:'شورتس ×4', 'shorts-2'
 function buildCatCard(cat, ci) {
   const card = document.createElement('div');
   card.className = 'cat-card';
+  const vidCount = cat.videos.filter(v => v.kind !== 'image').length;
+  const imgCount = cat.videos.filter(v => v.kind === 'image').length;
+  const countLabel = imgCount ? `${vidCount} فيديو + ${imgCount} صورة` : `${vidCount} فيديو`;
   card.innerHTML = `
     <div class="cat-card-header">
       <div class="cat-card-left">
         <span class="cat-drag">⠿</span>
         <div class="cat-name-display" id="cat-name-${ci}">${cat.title}</div>
-        <span class="cat-badge">${cat.videos.length} فيديو</span>
+        <span class="cat-badge">${countLabel}</span>
         <span class="cat-layout-badge">${LAYOUT_LABELS[cat.layout]||cat.layout}</span>
       </div>
       <div class="cat-card-actions">
@@ -643,17 +652,18 @@ function buildCatCard(cat, ci) {
     <div class="cat-card-body" id="cat-body-${ci}">
       <div class="videos-list" id="videos-list-${ci}">
         ${cat.videos.length === 0
-          ? '<div class="empty-state">لا توجد فيديوهات — أضف من الأسفل</div>'
+          ? '<div class="empty-state">لا توجد فيديوهات أو صور — أضف من الأسفل</div>'
           : cat.videos.map((v,vi) => buildVideoRowHTML(v, ci, vi)).join('')}
       </div>
+
+      <!-- ➕ ADD VIDEO -->
       <div class="add-video-area">
         <div class="add-video-grid">
           <div class="form-group">
-            <label class="form-label">رابط يوتيوب أو ID</label>
+            <label class="form-label">رابط الفيديو (يوتيوب أو أي رابط آخر)</label>
             <input class="form-input" id="new-vid-url-${ci}" type="text"
-              placeholder="https://youtube.com/watch?v=..."
+              placeholder="https://youtube.com/watch?v=... أو رابط فيديو آخر"
               oninput="previewThumb(${ci})" onkeydown="if(event.key==='Enter')addVideo(${ci})"/>
-            <img class="thumb-preview" id="thumb-prev-${ci}" src="" alt=""/>
           </div>
           <div class="form-group">
             <label class="form-label">عنوان الفيديو</label>
@@ -668,7 +678,33 @@ function buildCatCard(cat, ci) {
           </div>
           <div class="form-group">
             <label class="form-label">&nbsp;</label>
-            <button class="btn btn-solid-red" onclick="addVideo(${ci})">+ إضافة</button>
+            <button class="btn btn-solid-red" onclick="addVideo(${ci})">+ إضافة فيديو</button>
+          </div>
+        </div>
+        <div class="form-group" style="margin-top:0.8rem;">
+          <label class="form-label">رابط صورة مصغرة للفيديو (اختياري)</label>
+          <input class="form-input" id="new-vid-thumb-${ci}" type="text"
+            placeholder="اتركه فاضي ليُستخدم غلاف يوتيوب تلقائياً، أو ضع رابط صورتك الخاصة"
+            oninput="previewThumb(${ci})"/>
+          <img class="thumb-preview" id="thumb-prev-${ci}" src="" alt=""/>
+        </div>
+      </div>
+
+      <!-- ➕ ADD IMAGE -->
+      <div class="add-video-area" style="margin-top:0.8rem;border-color:rgba(46,204,113,0.3);">
+        <div class="add-video-grid" style="grid-template-columns:1fr 1fr auto;">
+          <div class="form-group">
+            <label class="form-label">🖼 رابط صورة (تُعرض بمقاسها الأصلي دون قص)</label>
+            <input class="form-input" id="new-img-url-${ci}" type="text" placeholder="https://...jpg"
+              onkeydown="if(event.key==='Enter')addImage(${ci})"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">عنوان الصورة (اختياري)</label>
+            <input class="form-input" id="new-img-title-${ci}" type="text" placeholder="اسم الصورة"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">&nbsp;</label>
+            <button class="btn" style="background:var(--green-dim);color:var(--green);border-color:rgba(46,204,113,0.3);" onclick="addImage(${ci})">+ إضافة صورة</button>
           </div>
         </div>
       </div>
@@ -678,16 +714,38 @@ function buildCatCard(cat, ci) {
 }
 
 function buildVideoRowHTML(v, ci, vi) {
+  if (v.kind === 'image') return buildImageRowHTML(v, ci, vi);
   const isShort = v.type === 'short';
   const thumbClass = isShort ? 'video-thumb-mini thumb-short' : 'video-thumb-mini thumb-wide';
+  const thumbSrc = v.thumbnail ? v.thumbnail : (v.id ? `https://i.ytimg.com/vi/${v.id}/mqdefault.jpg` : '');
+  const idLabel = v.id ? v.id : (v.url || '—');
   return `
     <div class="video-row" id="vrow-${ci}-${vi}">
-      <img class="${thumbClass}" src="https://i.ytimg.com/vi/${v.id}/mqdefault.jpg" alt="" onerror="this.style.opacity='.2'"/>
+      ${thumbSrc
+        ? `<img class="${thumbClass}" src="${thumbSrc}" alt="" onerror="this.style.opacity='.2'"/>`
+        : `<div class="${thumbClass}" style="display:flex;align-items:center;justify-content:center;font-size:1rem;">🎬</div>`}
       <div class="video-info">
         <div class="video-title-disp">${v.title||'—'}</div>
-        <div class="video-id-disp">${v.id}</div>
+        <div class="video-id-disp">${idLabel}</div>
       </div>
       <span class="video-type-badge">${isShort?'9:16':'16:9'}</span>
+      <button class="btn btn-ghost btn-icon btn-sm" onclick="moveVideo(${ci},${vi},-1)" title="أعلى" ${vi===0?'disabled':''}>↑</button>
+      <button class="btn btn-ghost btn-icon btn-sm" onclick="moveVideo(${ci},${vi},1)" title="أسفل" ${vi===categories[ci].videos.length-1?'disabled':''}>↓</button>
+      <button class="btn btn-red btn-icon btn-sm" onclick="confirmDeleteVideo(${ci},${vi})">🗑</button>
+    </div>
+  `;
+}
+
+function buildImageRowHTML(v, ci, vi) {
+  return `
+    <div class="video-row" id="vrow-${ci}-${vi}">
+      <img class="video-thumb-mini thumb-wide" src="${v.url}" alt=""
+        style="object-fit:contain;background:var(--gray-900);" onerror="this.style.opacity='.2'"/>
+      <div class="video-info">
+        <div class="video-title-disp">${v.title||'—'}</div>
+        <div class="video-id-disp" style="word-break:break-all;">${v.url}</div>
+      </div>
+      <span class="kind-badge-image">صورة</span>
       <button class="btn btn-ghost btn-icon btn-sm" onclick="moveVideo(${ci},${vi},-1)" title="أعلى" ${vi===0?'disabled':''}>↑</button>
       <button class="btn btn-ghost btn-icon btn-sm" onclick="moveVideo(${ci},${vi},1)" title="أسفل" ${vi===categories[ci].videos.length-1?'disabled':''}>↓</button>
       <button class="btn btn-red btn-icon btn-sm" onclick="confirmDeleteVideo(${ci},${vi})">🗑</button>
@@ -841,12 +899,17 @@ function extractYouTubeId(input) {
 }
 
 function previewThumb(ci) {
-  const input = document.getElementById(`new-vid-url-${ci}`).value;
-  const type  = document.getElementById(`new-vid-type-${ci}`).value;
-  const prev  = document.getElementById(`thumb-prev-${ci}`);
-  const id    = extractYouTubeId(input);
-  if (id) {
-    prev.src = `https://i.ytimg.com/vi/${id}/mqdefault.jpg`;
+  const urlVal   = document.getElementById(`new-vid-url-${ci}`).value;
+  const thumbEl  = document.getElementById(`new-vid-thumb-${ci}`);
+  const thumbVal = thumbEl ? thumbEl.value.trim() : '';
+  const type     = document.getElementById(`new-vid-type-${ci}`).value;
+  const prev     = document.getElementById(`thumb-prev-${ci}`);
+  const id       = extractYouTubeId(urlVal);
+  let src = '';
+  if (thumbVal) src = thumbVal;
+  else if (id) src = `https://i.ytimg.com/vi/${id}/mqdefault.jpg`;
+  if (src) {
+    prev.src = src;
     prev.className = `thumb-preview ${type==='short'?'portrait':''} show`;
   } else {
     prev.classList.remove('show');
@@ -857,15 +920,33 @@ function addVideo(ci) {
   const urlEl   = document.getElementById(`new-vid-url-${ci}`);
   const titleEl = document.getElementById(`new-vid-title-${ci}`);
   const typeEl  = document.getElementById(`new-vid-type-${ci}`);
-  const id      = extractYouTubeId(urlEl.value);
-  if (!id) { showToast('الرابط غير صحيح — أدخل رابط يوتيوب أو ID', 'error'); return; }
-  if (categories[ci].videos.find(v => v.id === id)) {
-    showToast('هذا الفيديو موجود بالفعل في القسم', 'error'); return;
-  }
+  const thumbEl = document.getElementById(`new-vid-thumb-${ci}`);
+  const raw     = urlEl.value.trim();
+  if (!raw) { showToast('أدخل رابط الفيديو أولاً', 'error'); return; }
+
+  const ytId  = extractYouTubeId(raw);
   const title = titleEl.value.trim() || `فيديو ${categories[ci].videos.length+1}`;
-  categories[ci].videos.push({ id, type: typeEl.value, title });
-  urlEl.value   = '';
-  titleEl.value = '';
+  const thumbVal = thumbEl.value.trim();
+  let videoObj;
+
+  if (ytId) {
+    if (categories[ci].videos.find(v => v.id === ytId)) {
+      showToast('هذا الفيديو موجود بالفعل في القسم', 'error'); return;
+    }
+    videoObj = { kind:'video', id: ytId, type: typeEl.value, title };
+  } else {
+    if (!/^https?:\/\//i.test(raw)) {
+      showToast('الرابط غير صحيح — أدخل رابط يوتيوب أو رابط فيديو صحيح (http/https)', 'error'); return;
+    }
+    if (categories[ci].videos.find(v => v.url === raw)) {
+      showToast('هذا الفيديو موجود بالفعل في القسم', 'error'); return;
+    }
+    videoObj = { kind:'video', url: raw, type: typeEl.value, title };
+  }
+  if (thumbVal) videoObj.thumbnail = thumbVal;
+
+  categories[ci].videos.push(videoObj);
+  urlEl.value = ''; titleEl.value = ''; thumbEl.value = '';
   document.getElementById(`thumb-prev-${ci}`).classList.remove('show');
   renderCategories();
   // ensure body open
@@ -877,12 +958,35 @@ function addVideo(ci) {
   showToast('✅ تم إضافة الفيديو — اضغط حفظ ونشر');
 }
 
+function addImage(ci) {
+  const urlEl   = document.getElementById(`new-img-url-${ci}`);
+  const titleEl = document.getElementById(`new-img-title-${ci}`);
+  const raw     = urlEl.value.trim();
+  if (!raw) { showToast('أدخل رابط الصورة أولاً', 'error'); return; }
+  if (!/^https?:\/\//i.test(raw)) {
+    showToast('الرابط غير صحيح — يجب أن يبدأ بـ http:// أو https://', 'error'); return;
+  }
+  if (categories[ci].videos.find(v => v.kind === 'image' && v.url === raw)) {
+    showToast('هذه الصورة موجودة بالفعل في القسم', 'error'); return;
+  }
+  categories[ci].videos.push({ kind:'image', url: raw, title: titleEl.value.trim() });
+  urlEl.value = ''; titleEl.value = '';
+  renderCategories();
+  const body = document.getElementById(`cat-body-${ci}`);
+  const btn  = document.getElementById(`collapse-btn-${ci}`);
+  if (body && body.classList.contains('collapsed')) {
+    body.classList.remove('collapsed'); btn && btn.classList.add('open');
+  }
+  showToast('✅ تم إضافة الصورة — اضغط حفظ ونشر');
+}
+
 function confirmDeleteVideo(ci, vi) {
   const v = categories[ci].videos[vi];
-  showConfirm('حذف هذا الفيديو؟', `ID: ${v.id}`, () => {
+  const isImage = v.kind === 'image';
+  showConfirm(isImage ? 'حذف هذه الصورة؟' : 'حذف هذا الفيديو؟', v.id || v.url || '', () => {
     categories[ci].videos.splice(vi, 1);
     renderCategories();
-    showToast('تم حذف الفيديو');
+    showToast(isImage ? 'تم حذف الصورة' : 'تم حذف الفيديو');
   });
 }
 
