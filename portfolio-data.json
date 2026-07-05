@@ -4,19 +4,40 @@
       "id": "cat_shorts",
       "title": "🎬 مقاطع قصيرة",
       "layout": "shorts",
-      "videos": []
+      "videos": [
+        {
+          "kind": "video",
+          "id": "mf3Mwl5oLkM",
+          "type": "short",
+          "title": "فيديو 1"
+        }
+      ]
     },
     {
       "id": "cat_films",
       "title": "🎥 أفلام",
       "layout": "wide",
-      "videos": []
+      "videos": [
+        {
+          "kind": "video",
+          "id": "i3ZhkyJiA6Q",
+          "type": "wide",
+          "title": "فيديو 1"
+        }
+      ]
     },
     {
       "id": "cat_commercials",
       "title": "📺 إعلانات",
       "layout": "wide",
-      "videos": []
+      "videos": [
+        {
+          "kind": "video",
+          "id": "jX21irLn0FU",
+          "type": "wide",
+          "title": "فيديو 1"
+        }
+      ]
     }
   ],
   "stats": [
