@@ -10,6 +10,18 @@
           "id": "mf3Mwl5oLkM",
           "type": "short",
           "title": "فيديو 1"
+        },
+        {
+          "kind": "video",
+          "id": "FrkOhz_GNtw",
+          "type": "short",
+          "title": "فيديو 2"
+        },
+        {
+          "kind": "video",
+          "id": "u15HymgfQC0",
+          "type": "short",
+          "title": "فيديو 3"
         }
       ]
     },
@@ -23,6 +35,18 @@
           "id": "i3ZhkyJiA6Q",
           "type": "wide",
           "title": "فيديو 1"
+        },
+        {
+          "kind": "video",
+          "id": "36CI7hzH7O0",
+          "type": "wide",
+          "title": "فيديو 2"
+        },
+        {
+          "kind": "video",
+          "id": "VQutx-8Uexo",
+          "type": "wide",
+          "title": "فيديو 3"
         }
       ]
     },
@@ -36,6 +60,18 @@
           "id": "jX21irLn0FU",
           "type": "wide",
           "title": "فيديو 1"
+        },
+        {
+          "kind": "video",
+          "id": "QFwqHgDulHI",
+          "type": "wide",
+          "title": "فيديو 2"
+        },
+        {
+          "kind": "video",
+          "id": "3mAvLeNowRc",
+          "type": "wide",
+          "title": "فيديو 3"
         }
       ]
     }
@@ -43,9 +79,9 @@
   "stats": [
     {
       "prefix": "+",
-      "value": 100,
+      "value": 34,
       "suffix": "",
-      "labelAr": "عميل",
+      "labelAr": "عميل راضي",
       "labelEn": "Happy Clients"
     },
     {
