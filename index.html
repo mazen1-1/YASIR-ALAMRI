@@ -35,8 +35,17 @@
   </script>
   <style>
     :root{ color-scheme: dark; }
+    
+    /* ── PREVENT MOBILE HORIZONTAL SHIFT / OVERFLOW ── */
+    html, body { 
+      overflow-x: hidden !important; 
+      max-width: 100% !important; 
+      width: 100% !important;
+      position: relative;
+    }
+    
     html{ scroll-behavior:smooth; scroll-padding-top:96px; }
-    body{ background:#0a0a0a; color: #F3F1EE; overflow-x: hidden; }
+    body{ background:#0a0a0a; color: #F3F1EE; }
 
     [data-en]{ font-family:'Inter',sans-serif; }
     [data-ar]{ font-family:'Cairo',sans-serif; }
@@ -325,6 +334,15 @@
 
     /* ── MOBILE RESPONSIVE FIXES ── */
     @media(max-width:768px){
+      /* Fix animation overflow on mobile screens */
+      .sr-left, .sr-right {
+        transform: translateY(40px) !important;
+      }
+      
+      .blob {
+        max-width: 100vw !important;
+      }
+
       /* partners grid — 3 per row on small screens */
       .partners-grid{
         grid-template-columns: repeat(3,1fr) !important;
