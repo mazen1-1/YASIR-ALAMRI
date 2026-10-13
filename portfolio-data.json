@@ -63,15 +63,15 @@
         },
         {
           "kind": "video",
-          "id": "QFwqHgDulHI",
-          "type": "wide",
-          "title": "فيديو 2"
-        },
-        {
-          "kind": "video",
           "id": "3mAvLeNowRc",
           "type": "wide",
           "title": "فيديو 3"
+        },
+        {
+          "kind": "video",
+          "id": "QFwqHgDulHI",
+          "type": "wide",
+          "title": "فيديو 2"
         }
       ]
     }
