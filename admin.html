@@ -513,8 +513,7 @@ function doLogin() {
     document.getElementById('pw-input').focus();
     return;
   }
-  if (!token || !token.startsWith('ghp_')) {
-    err.textContent = 'أدخل الـ Token الصحيح ';
+if (!token || !(token.startsWith('ghp_') || token.startsWith('github_pat_'))) {    err.textContent = 'أدخل الـ Token الصحيح ';
     err.style.display = 'block';
     document.getElementById('token-input').focus();
     return;
